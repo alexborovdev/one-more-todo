@@ -3,10 +3,15 @@ import type { TasksType } from './App'
 type PropsType = {
   title: string
   tasks: TasksType
+  removeTask: (id: string) => void
 }
 
 const TodoList = (props: PropsType) => {
-  const { title, tasks } = props
+  const {
+    title,
+    tasks,
+    removeTask
+  } = props
 
   return (
     <div>
@@ -15,9 +20,15 @@ const TodoList = (props: PropsType) => {
         <input />
         <button type="button">+</button>
         <ul>
-          <li><input type="checkbox" checked={tasks[0].isDone} /><span>{tasks[0].title}</span></li>
-          <li><input type="checkbox" checked={tasks[1].isDone} /><span>{tasks[1].title}</span></li>
-          <li><input type="checkbox" checked={tasks[2].isDone} /><span>{tasks[2].title}</span></li>
+          {tasks.map(({ id, title, isDone }) =>
+            <li key={id}>
+              <input type="checkbox" checked={isDone} />
+              <span>{title}</span>
+              <button type="button"
+                      onClick={() => removeTask(id)}>
+                X
+              </button>
+            </li>)}
         </ul>
       </div>
       <div>

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import TodoList from './TodoList'
 import './App.css'
 
@@ -10,7 +11,7 @@ type TaskType = {
 export type TasksType = Array<TaskType>
 
 const App = () => {
-  const technologies: TasksType = [
+  const [tasks, setTasks] = useState<TasksType>([
     {
       id: crypto.randomUUID(),
       title: 'HTML&CSS',
@@ -26,30 +27,17 @@ const App = () => {
       title: 'React',
       isDone: false
     }
-  ]
+  ])
 
-  const movies: TasksType = [
-    {
-      id: crypto.randomUUID(),
-      title: 'American Pie',
-      isDone: true
-    },
-    {
-      id: crypto.randomUUID(),
-      title: 'Superbad',
-      isDone: false
-    },
-    {
-      id: crypto.randomUUID(),
-      title: '21 Jump Street',
-      isDone: true
-    }
-  ]
+  const removeTask = (id: string) => setTasks(prevState => prevState.filter(task => task.id !== id))
 
   return (
     <div className="App">
-      <TodoList title="What to learn" tasks={technologies} />
-      <TodoList title="Movies" tasks={movies} />
+      <TodoList
+        title="What to learn"
+        tasks={tasks}
+        removeTask={removeTask}
+      />
     </div>
   )
 }
