@@ -1,14 +1,23 @@
-const TodoList = () => {
+import type { TasksType } from './App'
+
+type PropsType = {
+  title: string
+  tasks: TasksType
+}
+
+const TodoList = (props: PropsType) => {
+  const { title, tasks } = props
+
   return (
     <div>
-      <h3>What to learn</h3>
+      <h3>{title}</h3>
       <div>
         <input />
         <button type="button">+</button>
         <ul>
-          <li><input type="checkbox" checked={true} /><span>CSS&HTML</span></li>
-          <li><input type="checkbox" checked={true} /><span>JS</span></li>
-          <li><input type="checkbox" checked={false} /><span>React</span></li>
+          <li><input type="checkbox" checked={tasks[0].isDone} /><span>{tasks[0].title}</span></li>
+          <li><input type="checkbox" checked={tasks[1].isDone} /><span>{tasks[1].title}</span></li>
+          <li><input type="checkbox" checked={tasks[2].isDone} /><span>{tasks[2].title}</span></li>
         </ul>
       </div>
       <div>
