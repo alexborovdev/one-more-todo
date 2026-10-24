@@ -23,35 +23,21 @@ const TodoList = (props: Props) => {
   const addNewTaskHandler = () => {
     const title = newTaskTitle.trim()
 
-    if (!title) return
+    if (!title) {
+      return
+    }
 
     addNewTask(title)
     setNewTaskTitle('')
   }
 
-  const onNewTaskInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setNewTaskTitle(event.currentTarget.value)
-  }
-  const onNewTaskInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      addNewTaskHandler()
-    }
-  }
-  const onAddNewTaskButtonClick = () => {
-    addNewTaskHandler()
-  }
-  const onRemoveTaskButtonClick = (id: string) => {
-    removeTask(id)
-  }
-  const onChangeAllFilterButtonClick = () => {
-    changeFilter('all')
-  }
-  const onChangeActiveFilterButtonClick = () => {
-    changeFilter('active')
-  }
-  const onChangeCompletedFilterButtonClick = () => {
-    changeFilter('completed')
-  }
+  const onNewTaskInputChange = (event: ChangeEvent<HTMLInputElement>) => setNewTaskTitle(event.currentTarget.value)
+  const onNewTaskInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => event.key === 'Enter' && addNewTaskHandler()
+  const onAddNewTaskButtonClick = () => addNewTaskHandler()
+  const onRemoveTaskButtonClick = (id: string) => removeTask(id)
+  const onChangeAllFilterButtonClick = () => changeFilter('all')
+  const onChangeActiveFilterButtonClick = () => changeFilter('active')
+  const onChangeCompletedFilterButtonClick = () => changeFilter('completed')
 
   return (
     <div>
