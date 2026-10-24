@@ -34,7 +34,6 @@ const TodoList = (props: Props) => {
   const onNewTaskInputChange = (event: ChangeEvent<HTMLInputElement>) => setNewTaskTitle(event.currentTarget.value)
   const onNewTaskInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => event.key === 'Enter' && addNewTaskHandler()
   const onAddNewTaskButtonClick = () => addNewTaskHandler()
-  const onRemoveTaskButtonClick = (id: string) => removeTask(id)
   const onChangeAllFilterButtonClick = () => changeFilter('all')
   const onChangeActiveFilterButtonClick = () => changeFilter('active')
   const onChangeCompletedFilterButtonClick = () => changeFilter('completed')
@@ -52,15 +51,20 @@ const TodoList = (props: Props) => {
           +
         </button>
         <ul>
-          {tasks.map(({ id, title, isDone }) =>
-            <li key={id}>
-              <input type="checkbox" checked={isDone} />
-              <span>{title}</span>
-              <button type="button"
-                      onClick={() => onRemoveTaskButtonClick(id)}>
-                X
-              </button>
-            </li>)}
+          {tasks.map(({ id, title, isDone }) => {
+            const onRemoveTaskButtonClick = () => removeTask(id)
+
+            return (
+              <li key={id}>
+                <input type="checkbox" checked={isDone} />
+                <span>{title}</span>
+                <button type="button"
+                        onClick={onRemoveTaskButtonClick}>
+                  X
+                </button>
+              </li>
+            )
+          })}
         </ul>
       </div>
       <div>
