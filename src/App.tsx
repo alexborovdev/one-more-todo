@@ -28,13 +28,23 @@ const App = () => {
       isDone: false
     }
   ])
-  const [filter, setFilter] = useState<Filters>('active')
+  const [filter, setFilter] = useState<Filters>('all')
 
   const filteredTasks = tasks.filter(task => {
     if (filter === 'active') return !task.isDone
     if (filter === 'completed') return task.isDone
     return true
   })
+
+  const addTask = (title: string) => {
+    const newTask: Task = {
+      id: crypto.randomUUID(),
+      title,
+      isDone: false
+    }
+
+    setTasks(prevState => [newTask, ...prevState])
+  }
 
   const removeTask = (id: string) => setTasks(prevState => prevState.filter(task => task.id !== id))
 
@@ -45,6 +55,7 @@ const App = () => {
       <TodoList
         title="What to learn"
         tasks={filteredTasks}
+        addTask={addTask}
         removeTask={removeTask}
         changeFilter={changeFilter}
       />
