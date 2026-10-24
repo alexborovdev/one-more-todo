@@ -1,12 +1,13 @@
+import TodoList from './TodoList'
 import './App.css'
 
-function App () {
+const App = () => {
   return (
-    <>
-      <div>
-        hello
-      </div>
-    </>
+    <div className="App">
+      <TodoList />
+      <TodoList />
+      <TodoList />
+    </div>
   )
 }
 
