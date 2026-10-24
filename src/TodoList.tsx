@@ -1,13 +1,13 @@
 import type { Tasks, Filters } from './App'
 
-type PropsType = {
+type Props = {
   title: string
   tasks: Tasks
   removeTask: (id: string) => void
   changeFilter: (value: Filters) => void
 }
 
-const TodoList = (props: PropsType) => {
+const TodoList = (props: Props) => {
   const {
     title,
     tasks,
