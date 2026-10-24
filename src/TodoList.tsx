@@ -21,7 +21,11 @@ const TodoList = (props: Props) => {
   const [newTaskTitle, setNewTaskTitle] = useState('')
 
   const addNewTaskHandler = () => {
-    addNewTask(newTaskTitle)
+    const title = newTaskTitle.trim()
+
+    if (!title) return
+
+    addNewTask(title)
     setNewTaskTitle('')
   }
 
