@@ -1,16 +1,18 @@
-import type { TasksType } from './App'
+import type { Tasks, Filters } from './App'
 
 type PropsType = {
   title: string
-  tasks: TasksType
+  tasks: Tasks
   removeTask: (id: string) => void
+  changeFilter: (value: Filters) => void
 }
 
 const TodoList = (props: PropsType) => {
   const {
     title,
     tasks,
-    removeTask
+    removeTask,
+    changeFilter
   } = props
 
   return (
@@ -32,9 +34,18 @@ const TodoList = (props: PropsType) => {
         </ul>
       </div>
       <div>
-        <button type="button">All</button>
-        <button type="button">Active</button>
-        <button type="button">Completed</button>
+        <button type="button"
+                onClick={() => changeFilter('all')}>
+          All
+        </button>
+        <button type="button"
+                onClick={() => changeFilter('active')}>
+          Active
+        </button>
+        <button type="button"
+                onClick={() => changeFilter('completed')}>
+          Completed
+        </button>
       </div>
     </div>
   )
