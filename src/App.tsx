@@ -36,7 +36,7 @@ const App = () => {
     return true
   })
 
-  const addTask = (title: string) => {
+  const addNewTask = (title: string) => {
     const newTask: Task = {
       id: crypto.randomUUID(),
       title,
@@ -55,7 +55,7 @@ const App = () => {
       <TodoList
         title="What to learn"
         tasks={filteredTasks}
-        addTask={addTask}
+        addNewTask={addNewTask}
         removeTask={removeTask}
         changeFilter={changeFilter}
       />

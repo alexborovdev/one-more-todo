@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { type ChangeEvent, type KeyboardEvent, useState } from 'react'
 import type { Tasks, Filters } from './App'
 
 type Props = {
   title: string
   tasks: Tasks
-  addTask: (title: string) => void
+  addNewTask: (title: string) => void
   removeTask: (id: string) => void
   changeFilter: (value: Filters) => void
 }
@@ -13,31 +13,52 @@ const TodoList = (props: Props) => {
   const {
     title,
     tasks,
-    addTask,
+    addNewTask,
     removeTask,
     changeFilter
   } = props
 
-  const [newTaskTitle, setNewTaskTitle] = useState<string>('')
+  const [newTaskTitle, setNewTaskTitle] = useState('')
+
+  const addNewTaskHandler = () => {
+    addNewTask(newTaskTitle)
+    setNewTaskTitle('')
+  }
+
+  const onNewTaskInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setNewTaskTitle(event.currentTarget.value)
+  }
+  const onNewTaskInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      addNewTaskHandler()
+    }
+  }
+  const onAddNewTaskButtonClick = () => {
+    addNewTaskHandler()
+  }
+  const onRemoveTaskButtonClick = (id: string) => {
+    removeTask(id)
+  }
+  const onChangeAllFilterButtonClick = () => {
+    changeFilter('all')
+  }
+  const onChangeActiveFilterButtonClick = () => {
+    changeFilter('active')
+  }
+  const onChangeCompletedFilterButtonClick = () => {
+    changeFilter('completed')
+  }
 
   return (
     <div>
       <h3>{title}</h3>
       <div>
         <input value={newTaskTitle}
-               onChange={({ currentTarget }) => setNewTaskTitle(currentTarget.value)}
-               onKeyDown={({ key }) => {
-                 if (key === 'Enter') {
-                   addTask(newTaskTitle)
-                   setNewTaskTitle('')
-                 }
-               }}
+               onChange={onNewTaskInputChange}
+               onKeyDown={onNewTaskInputKeyDown}
         />
         <button type="button"
-                onClick={() => {
-                  addTask(newTaskTitle)
-                  setNewTaskTitle('')
-                }}>
+                onClick={onAddNewTaskButtonClick}>
           +
         </button>
         <ul>
@@ -46,7 +67,7 @@ const TodoList = (props: Props) => {
               <input type="checkbox" checked={isDone} />
               <span>{title}</span>
               <button type="button"
-                      onClick={() => removeTask(id)}>
+                      onClick={() => onRemoveTaskButtonClick(id)}>
                 X
               </button>
             </li>)}
@@ -54,15 +75,15 @@ const TodoList = (props: Props) => {
       </div>
       <div>
         <button type="button"
-                onClick={() => changeFilter('all')}>
+                onClick={onChangeAllFilterButtonClick}>
           All
         </button>
         <button type="button"
-                onClick={() => changeFilter('active')}>
+                onClick={onChangeActiveFilterButtonClick}>
           Active
         </button>
         <button type="button"
-                onClick={() => changeFilter('completed')}>
+                onClick={onChangeCompletedFilterButtonClick}>
           Completed
         </button>
       </div>
