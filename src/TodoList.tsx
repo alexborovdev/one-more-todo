@@ -5,6 +5,7 @@ type Props = {
   title: string
   tasks: Tasks
   addNewTask: (title: string) => void
+  changeStatus: (id: string) => void
   removeTask: (id: string) => void
   changeFilter: (value: Filters) => void
 }
@@ -14,6 +15,7 @@ const TodoList = (props: Props) => {
     title,
     tasks,
     addNewTask,
+    changeStatus,
     removeTask,
     changeFilter
   } = props
@@ -31,8 +33,8 @@ const TodoList = (props: Props) => {
     setNewTaskTitle('')
   }
 
-  const onNewTaskInputChange = (event: ChangeEvent<HTMLInputElement>) => setNewTaskTitle(event.currentTarget.value)
-  const onNewTaskInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => event.key === 'Enter' && addNewTaskHandler()
+  const onNewTaskInputChange = (e: ChangeEvent<HTMLInputElement>) => setNewTaskTitle(e.currentTarget.value)
+  const onNewTaskInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && addNewTaskHandler()
   const onAddNewTaskButtonClick = () => addNewTaskHandler()
   const onChangeAllFilterButtonClick = () => changeFilter('all')
   const onChangeActiveFilterButtonClick = () => changeFilter('active')
@@ -52,11 +54,15 @@ const TodoList = (props: Props) => {
         </button>
         <ul>
           {tasks.map(({ id, title, isDone }) => {
+            const onChangeStatusCheckboxCheck = () => changeStatus(id)
             const onRemoveTaskButtonClick = () => removeTask(id)
 
             return (
               <li key={id}>
-                <input type="checkbox" checked={isDone} />
+                <input type="checkbox"
+                       checked={isDone}
+                       onChange={onChangeStatusCheckboxCheck}
+                />
                 <span>{title}</span>
                 <button type="button"
                         onClick={onRemoveTaskButtonClick}>

@@ -29,7 +29,6 @@ const App = () => {
     }
   ])
   const [filter, setFilter] = useState<Filters>('all')
-
   const filteredTasks = tasks.filter(task => {
     if (filter === 'active') return !task.isDone
     if (filter === 'completed') return task.isDone
@@ -45,9 +44,14 @@ const App = () => {
 
     setTasks(prevState => [newTask, ...prevState])
   }
-
+  const changeStatus = (id: string) => {
+    setTasks(prevState => prevState.map(task => task.id === id
+        ? { ...task, isDone: !task.isDone }
+        : task
+      )
+    )
+  }
   const removeTask = (id: string) => setTasks(prevState => prevState.filter(task => task.id !== id))
-
   const changeFilter = (value: Filters) => setFilter(value)
 
   return (
@@ -56,6 +60,7 @@ const App = () => {
         title="What to learn"
         tasks={filteredTasks}
         addNewTask={addNewTask}
+        changeStatus={changeStatus}
         removeTask={removeTask}
         changeFilter={changeFilter}
       />
