@@ -21,19 +21,25 @@ const TodoList = (props: Props) => {
   } = props
 
   const [newTaskTitle, setNewTaskTitle] = useState('')
+  const [isError, setIsError] = useState(false)
 
   const addNewTaskHandler = () => {
     const title = newTaskTitle.trim()
 
     if (!title) {
+      setIsError(true)
       return
     }
 
+    setIsError(false)
     addNewTask(title)
     setNewTaskTitle('')
   }
 
-  const onNewTaskInputChange = (e: ChangeEvent<HTMLInputElement>) => setNewTaskTitle(e.currentTarget.value)
+  const onNewTaskInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    e.currentTarget.value.trim() && setIsError(false)
+    setNewTaskTitle(e.currentTarget.value)
+  }
   const onNewTaskInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && addNewTaskHandler()
   const onAddNewTaskButtonClick = () => addNewTaskHandler()
   const onChangeAllFilterButtonClick = () => changeFilter('all')
@@ -44,7 +50,8 @@ const TodoList = (props: Props) => {
     <div>
       <h3>{title}</h3>
       <div>
-        <input value={newTaskTitle}
+        <input className={isError ? 'error' : ''}
+               value={newTaskTitle}
                onChange={onNewTaskInputChange}
                onKeyDown={onNewTaskInputKeyDown}
         />
@@ -52,6 +59,10 @@ const TodoList = (props: Props) => {
                 onClick={onAddNewTaskButtonClick}>
           +
         </button>
+        {isError &&
+          <div className="error-message">
+            Title is required
+          </div>}
         <ul>
           {tasks.map(({ id, title, isDone }) => {
             const onChangeStatusCheckboxCheck = () => changeStatus(id)
