@@ -25,8 +25,28 @@ const App = () => {
     {
       id: crypto.randomUUID(),
       title: 'React',
+      isDone: true
+    },
+    {
+      id: crypto.randomUUID(),
+      title: 'Redux',
       isDone: false
-    }
+    },
+    {
+      id: crypto.randomUUID(),
+      title: 'Rest API',
+      isDone: false
+    },
+    {
+      id: crypto.randomUUID(),
+      title: 'GraphQL',
+      isDone: false
+    },
+    {
+      id: crypto.randomUUID(),
+      title: 'Web Socket',
+      isDone: false
+    },
   ])
   const [filter, setFilter] = useState<Filters>('all')
   const filteredTasks = tasks.filter(task => {
@@ -63,6 +83,7 @@ const App = () => {
         changeStatus={changeStatus}
         removeTask={removeTask}
         changeFilter={changeFilter}
+        filter={filter}
       />
     </div>
   )

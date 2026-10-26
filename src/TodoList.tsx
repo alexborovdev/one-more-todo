@@ -8,6 +8,7 @@ type Props = {
   changeStatus: (id: string) => void
   removeTask: (id: string) => void
   changeFilter: (value: Filters) => void
+  filter: Filters
 }
 
 const TodoList = (props: Props) => {
@@ -17,7 +18,8 @@ const TodoList = (props: Props) => {
     addNewTask,
     changeStatus,
     removeTask,
-    changeFilter
+    changeFilter,
+    filter
   } = props
 
   const [newTaskTitle, setNewTaskTitle] = useState('')
@@ -86,14 +88,17 @@ const TodoList = (props: Props) => {
       </div>
       <div>
         <button type="button"
+                className={filter === 'all' ? 'active-filter' : ''}
                 onClick={onChangeAllFilterButtonClick}>
           All
         </button>
         <button type="button"
+                className={filter === 'active' ? 'active-filter' : ''}
                 onClick={onChangeActiveFilterButtonClick}>
           Active
         </button>
         <button type="button"
+                className={filter === 'completed' ? 'active-filter' : ''}
                 onClick={onChangeCompletedFilterButtonClick}>
           Completed
         </button>
