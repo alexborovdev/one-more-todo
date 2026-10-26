@@ -76,7 +76,9 @@ const TodoList = (props: Props) => {
                        checked={isDone}
                        onChange={onChangeStatusCheckboxCheck}
                 />
-                <span>{title}</span>
+                <span className={isDone ? 'is-done' : ''}>
+                  {title}
+                </span>
                 <button type="button"
                         onClick={onRemoveTaskButtonClick}>
                   X
