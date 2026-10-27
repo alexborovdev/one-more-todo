@@ -2,17 +2,19 @@ import { type ChangeEvent, type KeyboardEvent, useState } from 'react'
 import type { Tasks, Filters } from './App'
 
 type Props = {
+  id: string
   title: string
   tasks: Tasks
-  addNewTask: (title: string) => void
-  changeStatus: (id: string) => void
-  removeTask: (id: string) => void
-  changeFilter: (value: Filters) => void
+  addNewTask: (todoId: string, title: string) => void
+  changeStatus: (todoId: string, taskId: string) => void
+  removeTask: (todoId: string, taskId: string) => void
+  changeFilter: (todoId: string, value: Filters) => void
   filter: Filters
 }
 
 const TodoList = (props: Props) => {
   const {
+    id,
     title,
     tasks,
     addNewTask,
@@ -34,7 +36,7 @@ const TodoList = (props: Props) => {
     }
 
     setIsError(false)
-    addNewTask(title)
+    addNewTask(id, title)
     setNewTaskTitle('')
   }
 
@@ -44,9 +46,9 @@ const TodoList = (props: Props) => {
   }
   const onNewTaskInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && addNewTaskHandler()
   const onAddNewTaskButtonClick = () => addNewTaskHandler()
-  const onChangeAllFilterButtonClick = () => changeFilter('all')
-  const onChangeActiveFilterButtonClick = () => changeFilter('active')
-  const onChangeCompletedFilterButtonClick = () => changeFilter('completed')
+  const onChangeAllFilterButtonClick = () => changeFilter(id, 'all')
+  const onChangeActiveFilterButtonClick = () => changeFilter(id, 'active')
+  const onChangeCompletedFilterButtonClick = () => changeFilter(id, 'completed')
 
   return (
     <div>
@@ -66,12 +68,12 @@ const TodoList = (props: Props) => {
             Title is required
           </div>}
         <ul>
-          {tasks.map(({ id, title, isDone }) => {
-            const onChangeStatusCheckboxCheck = () => changeStatus(id)
-            const onRemoveTaskButtonClick = () => removeTask(id)
+          {tasks.map(({ id: taskId, title, isDone }) => {
+            const onChangeStatusCheckboxCheck = () => changeStatus(id, taskId)
+            const onRemoveTaskButtonClick = () => removeTask(id, taskId)
 
             return (
-              <li key={id}>
+              <li key={taskId}>
                 <input type="checkbox"
                        checked={isDone}
                        onChange={onChangeStatusCheckboxCheck}
