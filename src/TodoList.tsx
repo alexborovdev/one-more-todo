@@ -8,6 +8,7 @@ type Props = {
   addNewTask: (todoId: string, title: string) => void
   changeStatus: (todoId: string, taskId: string) => void
   removeTask: (todoId: string, taskId: string) => void
+  removeTodo: (todoId: string) => void
   changeFilter: (todoId: string, value: Filters) => void
   filter: Filters
 }
@@ -20,6 +21,7 @@ const TodoList = (props: Props) => {
     addNewTask,
     changeStatus,
     removeTask,
+    removeTodo,
     changeFilter,
     filter
   } = props
@@ -46,13 +48,20 @@ const TodoList = (props: Props) => {
   }
   const onNewTaskInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && addNewTaskHandler()
   const onAddNewTaskButtonClick = () => addNewTaskHandler()
+  const onDeleteTodoButtonClick = () => removeTodo(id)
   const onChangeAllFilterButtonClick = () => changeFilter(id, 'all')
   const onChangeActiveFilterButtonClick = () => changeFilter(id, 'active')
   const onChangeCompletedFilterButtonClick = () => changeFilter(id, 'completed')
 
   return (
     <div>
-      <h3>{title}</h3>
+      <h3>
+        {title}
+        <button type="button"
+                onClick={onDeleteTodoButtonClick}>
+          X
+        </button>
+      </h3>
       <div>
         <input className={isError ? 'error' : ''}
                value={newTaskTitle}

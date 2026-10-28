@@ -102,6 +102,17 @@ const App = () => {
       [todoId]: prevState[todoId].filter(task => task.id !== taskId)
     }))
   }
+  const removeTodo = (todoId: string) => {
+    setTodoLists(prevState =>
+      prevState.filter(({ id }) => id !== todoId)
+    )
+
+    setTasks(prevState => {
+      const { [todoId]: removedTasks, ...remainingTasks } = prevState
+
+      return remainingTasks
+    })
+  }
   const changeFilter = (id: string, value: Filters) => {
     setTodoLists(prevState =>
       prevState.map(todoList =>
@@ -130,6 +141,7 @@ const App = () => {
             addNewTask={addNewTask}
             changeStatus={changeStatus}
             removeTask={removeTask}
+            removeTodo={removeTodo}
             changeFilter={changeFilter}
             filter={filter}
           />
