@@ -62,43 +62,32 @@ const TodoList = (props: Props) => {
           X
         </button>
       </h3>
-      <div>
-        <input className={isError ? 'error' : ''}
-               value={newTaskTitle}
-               onChange={onNewTaskInputChange}
-               onKeyDown={onNewTaskInputKeyDown}
-        />
-        <button type="button"
-                onClick={onAddNewTaskButtonClick}>
-          +
-        </button>
-        {isError &&
-          <div className="error-message">
-            Title is required
-          </div>}
-        <ul>
-          {tasks.map(({ id: taskId, title, isDone }) => {
-            const onChangeStatusCheckboxCheck = () => changeStatus(id, taskId)
-            const onRemoveTaskButtonClick = () => removeTask(id, taskId)
+      <AddItemForm
+        id={id}
+        addNewTaskHandler={addNewTaskHandler}
+      />
+      <ul>
+        {tasks.map(({ id: taskId, title, isDone }) => {
+          const onChangeStatusCheckboxCheck = () => changeStatus(id, taskId)
+          const onRemoveTaskButtonClick = () => removeTask(id, taskId)
 
-            return (
-              <li key={taskId}>
-                <input type="checkbox"
-                       checked={isDone}
-                       onChange={onChangeStatusCheckboxCheck}
-                />
-                <span className={isDone ? 'is-done' : ''}>
+          return (
+            <li key={taskId}>
+              <input type="checkbox"
+                     checked={isDone}
+                     onChange={onChangeStatusCheckboxCheck}
+              />
+              <span className={isDone ? 'is-done' : ''}>
                   {title}
                 </span>
-                <button type="button"
-                        onClick={onRemoveTaskButtonClick}>
-                  X
-                </button>
-              </li>
-            )
-          })}
-        </ul>
-      </div>
+              <button type="button"
+                      onClick={onRemoveTaskButtonClick}>
+                X
+              </button>
+            </li>
+          )
+        })}
+      </ul>
       <div>
         <button type="button"
                 className={filter === 'all' ? 'active-filter' : ''}
@@ -121,3 +110,56 @@ const TodoList = (props: Props) => {
 }
 
 export default TodoList
+
+type PProps = {
+  id: string
+  addNewTask: (todoId: string, title: string) => void
+}
+
+function AddItemForm (props: PProps) {
+  const {
+    id,
+    addNewTaskHandler
+  } = props
+
+  const [newTaskTitle, setNewTaskTitle] = useState('')
+  const [isError, setIsError] = useState(false)
+
+  const addNewTaskHandler = () => {
+    const title = newTaskTitle.trim()
+
+    if (!title) {
+      setIsError(true)
+      return
+    }
+
+    setIsError(false)
+    addNewTask(id, title)
+    setNewTaskTitle('')
+  }
+
+  const onNewTaskInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    e.currentTarget.value.trim() && setIsError(false)
+    setNewTaskTitle(e.currentTarget.value)
+  }
+  const onNewTaskInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && addNewTaskHandler()
+  const onAddNewTaskButtonClick = () => addNewTaskHandler()
+
+  return (
+    <div>
+      <input className={isError ? 'error' : ''}
+             value={newTaskTitle}
+             onChange={onNewTaskInputChange}
+             onKeyDown={onNewTaskInputKeyDown}
+      />
+      <button type="button"
+              onClick={onAddNewTaskButtonClick}>
+        +
+      </button>
+      {isError &&
+        <div className="error-message">
+          Title is required
+        </div>}
+    </div>
+  )
+}
