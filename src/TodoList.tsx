@@ -1,4 +1,4 @@
-import { type ChangeEvent, type KeyboardEvent, useState } from 'react'
+import AddItemForm from './AddItemForm'
 import type { Tasks, Filters } from './App'
 
 type Props = {
@@ -26,28 +26,6 @@ const TodoList = (props: Props) => {
     filter
   } = props
 
-  const [newTaskTitle, setNewTaskTitle] = useState('')
-  const [isError, setIsError] = useState(false)
-
-  const addNewTaskHandler = () => {
-    const title = newTaskTitle.trim()
-
-    if (!title) {
-      setIsError(true)
-      return
-    }
-
-    setIsError(false)
-    addNewTask(id, title)
-    setNewTaskTitle('')
-  }
-
-  const onNewTaskInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    e.currentTarget.value.trim() && setIsError(false)
-    setNewTaskTitle(e.currentTarget.value)
-  }
-  const onNewTaskInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && addNewTaskHandler()
-  const onAddNewTaskButtonClick = () => addNewTaskHandler()
   const onDeleteTodoButtonClick = () => removeTodo(id)
   const onChangeAllFilterButtonClick = () => changeFilter(id, 'all')
   const onChangeActiveFilterButtonClick = () => changeFilter(id, 'active')
@@ -64,7 +42,7 @@ const TodoList = (props: Props) => {
       </h3>
       <AddItemForm
         id={id}
-        addNewTaskHandler={addNewTaskHandler}
+        addNewTask={addNewTask}
       />
       <ul>
         {tasks.map(({ id: taskId, title, isDone }) => {
@@ -110,56 +88,3 @@ const TodoList = (props: Props) => {
 }
 
 export default TodoList
-
-type PProps = {
-  id: string
-  addNewTask: (todoId: string, title: string) => void
-}
-
-function AddItemForm (props: PProps) {
-  const {
-    id,
-    addNewTaskHandler
-  } = props
-
-  const [newTaskTitle, setNewTaskTitle] = useState('')
-  const [isError, setIsError] = useState(false)
-
-  const addNewTaskHandler = () => {
-    const title = newTaskTitle.trim()
-
-    if (!title) {
-      setIsError(true)
-      return
-    }
-
-    setIsError(false)
-    addNewTask(id, title)
-    setNewTaskTitle('')
-  }
-
-  const onNewTaskInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    e.currentTarget.value.trim() && setIsError(false)
-    setNewTaskTitle(e.currentTarget.value)
-  }
-  const onNewTaskInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && addNewTaskHandler()
-  const onAddNewTaskButtonClick = () => addNewTaskHandler()
-
-  return (
-    <div>
-      <input className={isError ? 'error' : ''}
-             value={newTaskTitle}
-             onChange={onNewTaskInputChange}
-             onKeyDown={onNewTaskInputKeyDown}
-      />
-      <button type="button"
-              onClick={onAddNewTaskButtonClick}>
-        +
-      </button>
-      {isError &&
-        <div className="error-message">
-          Title is required
-        </div>}
-    </div>
-  )
-}
