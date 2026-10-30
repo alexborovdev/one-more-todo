@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import AddItemForm from './AddItemForm'
 import TodoList from './TodoList'
 import './App.css'
 
@@ -74,6 +75,16 @@ const App = () => {
     ]
   })
 
+  const addNewTodoList = (title: string) => {
+    const todo: Todo = {
+      id: crypto.randomUUID(),
+      title,
+      filter: 'all'
+    }
+
+    setTodoLists(prevState => [todo, ...prevState])
+    setTasks(prevState => ({ ...prevState, [todo.id]: [] }))
+  }
   const addNewTask = (todoId: string, title: string) => {
     const newTask: Task = {
       id: crypto.randomUUID(),
@@ -125,6 +136,9 @@ const App = () => {
 
   return (
     <div className="App">
+      <AddItemForm
+        addNewItem={addNewTodoList}
+      />
       {todoLists.map(({ id, title, filter }) => {
         const filteredTasks = tasks[id].filter(task => {
           if (filter === 'active') return !task.isDone

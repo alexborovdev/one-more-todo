@@ -26,6 +26,10 @@ const TodoList = (props: Props) => {
     filter
   } = props
 
+  const addTask = (title: string) => {
+    addNewTask(id, title)
+  }
+
   const onDeleteTodoButtonClick = () => removeTodo(id)
   const onChangeAllFilterButtonClick = () => changeFilter(id, 'all')
   const onChangeActiveFilterButtonClick = () => changeFilter(id, 'active')
@@ -41,8 +45,7 @@ const TodoList = (props: Props) => {
         </button>
       </h3>
       <AddItemForm
-        id={id}
-        addNewTask={addNewTask}
+        addNewItem={addTask}
       />
       <ul>
         {tasks.map(({ id: taskId, title, isDone }) => {
