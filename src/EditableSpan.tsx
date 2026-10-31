@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from 'react'
+import { useState, type ChangeEvent, type KeyboardEvent } from 'react'
 
 type Props = {
   title: string
@@ -19,6 +19,11 @@ const EditableSpan = (props: Props) => {
     setInputValue(title)
     setIsError(false)
     setEditMode(true)
+  }
+  const cancelEditMode = () => {
+    setInputValue(title)
+    setIsError(false)
+    setEditMode(false)
   }
   const activateViewMode = () => {
     const newTitle = inputValue.trim()
@@ -42,6 +47,16 @@ const EditableSpan = (props: Props) => {
     setInputValue(value)
   }
 
+  const onInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      activateViewMode()
+    }
+
+    if (e.key === 'Escape') {
+      cancelEditMode()
+    }
+  }
+
   return !editMode ?
     <span onDoubleClick={activateEditMode}>
       {title}
@@ -51,6 +66,7 @@ const EditableSpan = (props: Props) => {
       value={inputValue}
       autoFocus={true}
       onChange={onInputValueChange}
+      onKeyDown={onInputKeyDown}
       onBlur={activateViewMode}
     />
 }
