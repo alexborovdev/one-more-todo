@@ -13,26 +13,41 @@ const EditableSpan = (props: Props) => {
 
   const [editMode, setEditMode] = useState(false)
   const [inputValue, setInputValue] = useState(title)
+  const [isError, setIsError] = useState(false)
 
   const activateEditMode = () => {
-    setEditMode(true)
     setInputValue(title)
+    setIsError(false)
+    setEditMode(true)
   }
   const activateViewMode = () => {
     const newTitle = inputValue.trim()
 
-    if (newTitle && newTitle !== title) {
+    if (!newTitle) {
+      setIsError(true)
+      return
+    }
+
+    if (newTitle !== title) {
       onChange(newTitle)
     }
 
+    setIsError(false)
     setEditMode(false)
   }
 
-  const onInputValueChange = (e: ChangeEvent<HTMLInputElement>) => setInputValue(e.currentTarget.value)
+  const onInputValueChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.currentTarget.value
+    value.trim() && setIsError(false)
+    setInputValue(value)
+  }
 
   return !editMode ?
-    <span onDoubleClick={activateEditMode}>{title}</span> :
+    <span onDoubleClick={activateEditMode}>
+      {title}
+    </span> :
     <input
+      className={isError ? 'error' : ''}
       value={inputValue}
       autoFocus={true}
       onChange={onInputValueChange}

@@ -97,6 +97,24 @@ const App = () => {
       [todoId]: [newTask, ...prevState[todoId]]
     }))
   }
+  const removeTask = (todoId: string, taskId: string) => {
+    setTasks(prevState => ({
+      ...prevState,
+      [todoId]: prevState[todoId].filter(task => task.id !== taskId)
+    }))
+  }
+  const removeTodo = (todoId: string) => {
+    setTodoLists(prevState =>
+      prevState.filter(({ id }) => id !== todoId)
+    )
+
+    setTasks(prevState => {
+      const { [todoId]: removedTasks, ...remainingTasks } = prevState
+
+      return remainingTasks
+    })
+  }
+
   const changeStatus = (todoId: string, taskId: string) => {
     setTasks(prevState => ({
       ...prevState,
@@ -107,12 +125,16 @@ const App = () => {
       )
     }))
   }
-  const removeTask = (todoId: string, taskId: string) => {
-    setTasks(prevState => ({
-      ...prevState,
-      [todoId]: prevState[todoId].filter(task => task.id !== taskId)
-    }))
+  const changeFilter = (id: string, value: Filters) => {
+    setTodoLists(prevState =>
+      prevState.map(todoList =>
+        todoList.id === id
+          ? { ...todoList, filter: value }
+          : todoList
+      )
+    )
   }
+
   const changeTaskTitle = (todoId: string, taskId: string, newTitle: string) => {
     setTasks(prevState => ({
       ...prevState,
@@ -129,27 +151,6 @@ const App = () => {
         todo.id === todoId
           ? { ...todo, title: newTitle }
           : todo
-      )
-    )
-  }
-
-  const removeTodo = (todoId: string) => {
-    setTodoLists(prevState =>
-      prevState.filter(({ id }) => id !== todoId)
-    )
-
-    setTasks(prevState => {
-      const { [todoId]: removedTasks, ...remainingTasks } = prevState
-
-      return remainingTasks
-    })
-  }
-  const changeFilter = (id: string, value: Filters) => {
-    setTodoLists(prevState =>
-      prevState.map(todoList =>
-        todoList.id === id
-          ? { ...todoList, filter: value }
-          : todoList
       )
     )
   }
@@ -172,14 +173,14 @@ const App = () => {
             id={id}
             title={title}
             tasks={filteredTasks}
+            filter={filter}
             addNewTask={addNewTask}
-            changeStatus={changeStatus}
             removeTask={removeTask}
+            removeTodo={removeTodo}
+            changeStatus={changeStatus}
+            changeFilter={changeFilter}
             changeTaskTitle={changeTaskTitle}
             changeTodoTitle={changeTodoTitle}
-            removeTodo={removeTodo}
-            changeFilter={changeFilter}
-            filter={filter}
           />
         )
       })}

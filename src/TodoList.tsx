@@ -6,14 +6,14 @@ type Props = {
   id: string
   title: string
   tasks: Tasks
+  filter: Filters
   addNewTask: (todoId: string, title: string) => void
-  changeStatus: (todoId: string, taskId: string) => void
   removeTask: (todoId: string, taskId: string) => void
+  removeTodo: (todoId: string) => void
+  changeStatus: (todoId: string, taskId: string) => void
+  changeFilter: (todoId: string, value: Filters) => void
   changeTaskTitle: (todoId: string, taskId: string, newTitle: string) => void
   changeTodoTitle: (todoId: string, newTitle: string) => void
-  removeTodo: (todoId: string) => void
-  changeFilter: (todoId: string, value: Filters) => void
-  filter: Filters
 }
 
 const TodoList = (props: Props) => {
@@ -21,14 +21,14 @@ const TodoList = (props: Props) => {
     id,
     title,
     tasks,
+    filter,
     addNewTask,
-    changeStatus,
     removeTask,
+    removeTodo,
+    changeStatus,
+    changeFilter,
     changeTaskTitle,
     changeTodoTitle,
-    removeTodo,
-    changeFilter,
-    filter
   } = props
 
   const addTask = (title: string) => {
