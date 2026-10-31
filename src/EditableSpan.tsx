@@ -46,7 +46,6 @@ const EditableSpan = (props: Props) => {
     value.trim() && setIsError(false)
     setInputValue(value)
   }
-
   const onInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       activateViewMode()
