@@ -9,7 +9,8 @@ type Props = {
   addNewTask: (todoId: string, title: string) => void
   changeStatus: (todoId: string, taskId: string) => void
   removeTask: (todoId: string, taskId: string) => void
-  changeTitle: (todoId: string, taskId: string, newTitle: string) => void
+  changeTaskTitle: (todoId: string, taskId: string, newTitle: string) => void
+  changeTodoTitle: (todoId: string, newTitle: string) => void
   removeTodo: (todoId: string) => void
   changeFilter: (todoId: string, value: Filters) => void
   filter: Filters
@@ -23,7 +24,8 @@ const TodoList = (props: Props) => {
     addNewTask,
     changeStatus,
     removeTask,
-    changeTitle,
+    changeTaskTitle,
+    changeTodoTitle,
     removeTodo,
     changeFilter,
     filter
@@ -33,6 +35,7 @@ const TodoList = (props: Props) => {
     addNewTask(id, title)
   }
 
+  const onChangeTodoTitleChange = (title: string) => changeTodoTitle(id, title)
   const onDeleteTodoButtonClick = () => removeTodo(id)
   const onChangeAllFilterButtonClick = () => changeFilter(id, 'all')
   const onChangeActiveFilterButtonClick = () => changeFilter(id, 'active')
@@ -41,7 +44,10 @@ const TodoList = (props: Props) => {
   return (
     <div>
       <h3>
-        {title}
+        <EditableSpan
+          title={title}
+          onChange={onChangeTodoTitleChange}
+        />
         <button type="button"
                 onClick={onDeleteTodoButtonClick}>
           X
@@ -54,7 +60,7 @@ const TodoList = (props: Props) => {
         {tasks.map(({ id: taskId, title, isDone }) => {
           const onChangeStatusCheckboxCheck = () => changeStatus(id, taskId)
           const onRemoveTaskButtonClick = () => removeTask(id, taskId)
-          const onChangeInputValueChange = (newValue: string) => changeTitle(id, taskId, newValue)
+          const onChangeInputValueChange = (newValue: string) => changeTaskTitle(id, taskId, newValue)
 
           return (
             <li key={taskId}>
