@@ -11,6 +11,15 @@ const todoListsReducer = (state: Todos, action: Action): Todos => {
       return state.filter(todo => todo.id !== action.id)
     }
 
+    case 'ADD_TODO': {
+      return [{
+        id: crypto.randomUUID(),
+        title: action.title,
+        filter: 'all'
+      },
+        ...state]
+    }
+
     default:
       throw new Error('Invalid action type')
   }

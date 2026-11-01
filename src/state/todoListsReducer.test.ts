@@ -27,3 +27,36 @@ test('removes the specified todo list', () => {
   expect(startState).toHaveLength(2)
   expect(endState).not.toBe(startState)
 })
+
+test('adds a new todo list', () => {
+  const todoListId1 = crypto.randomUUID()
+  const todoListId2 = crypto.randomUUID()
+
+  const newTodoListTitle = 'New Todo List'
+
+  const startState: Todos = [
+    {
+      id: todoListId1,
+      title: 'What to learn',
+      filter: 'all'
+    },
+    {
+      id: todoListId2,
+      title: 'What to buy',
+      filter: 'all'
+    },
+  ]
+  const endState = todoListsReducer(startState, {
+    type: 'ADD_TODO',
+    title: newTodoListTitle
+  })
+
+  expect(endState).toHaveLength(3)
+  expect(endState[0]).toEqual({
+    id: expect.any(String),
+    title: newTodoListTitle,
+    filter: 'all'
+  })
+  expect(startState).toHaveLength(2)
+  expect(endState).not.toBe(startState)
+})
