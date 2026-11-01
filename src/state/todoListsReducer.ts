@@ -1,8 +1,9 @@
 import type { Todos } from '@/types/todo'
 
-type Action =
+export type Action =
   | { type: 'REMOVE_TODO'; id: string }
   | { type: 'ADD_TODO'; title: string }
+  | { type: 'CHANGE_TODO_TITLE'; id: string; title: string }
 
 const todoListsReducer = (state: Todos, action: Action): Todos => {
   switch (action.type) {
@@ -17,6 +18,13 @@ const todoListsReducer = (state: Todos, action: Action): Todos => {
         filter: 'all'
       },
         ...state]
+    }
+
+    case 'CHANGE_TODO_TITLE': {
+      return state.map((todo) => todo.id === action.id ?
+        { ...todo, title: action.title } :
+        todo
+      )
     }
 
     default:
