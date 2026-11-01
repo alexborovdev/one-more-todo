@@ -2,29 +2,31 @@ import { expect, test } from 'vitest'
 import type { Todos } from '@/types/todo'
 import todoListsReducer, { type Action } from './todoListsReducer'
 
-test('adds a new todo list', () => {
-  const todoListId1 = crypto.randomUUID()
-  const todoListId2 = crypto.randomUUID()
+const createInitialState = (): Todos => [
+  {
+    id: 'todo-1',
+    title: 'What to learn',
+    filter: 'all'
+  },
+  {
+    id: 'todo-2',
+    title: 'What to buy',
+    filter: 'all'
+  }
+]
 
+test('adds a new todo list', () => {
   const newTodoListTitle = 'New Todo List'
 
-  const startState: Todos = [
-    {
-      id: todoListId1,
-      title: 'What to learn',
-      filter: 'all'
-    },
-    {
-      id: todoListId2,
-      title: 'What to buy',
-      filter: 'all'
-    },
-  ]
-  const endState = todoListsReducer(startState, {
+  const action = {
     type: 'ADD_TODO',
     title: newTodoListTitle
-  })
+  } satisfies Action
 
+  const startState = createInitialState()
+  const endState = todoListsReducer(startState, action)
+
+  expect(endState.slice(1)).toEqual(startState)
   expect(endState).toHaveLength(3)
   expect(endState[0]).toEqual({
     id: expect.any(String),
@@ -35,95 +37,59 @@ test('adds a new todo list', () => {
   expect(endState).not.toBe(startState)
 })
 test('removes the specified todo list', () => {
-  const todoListId1 = crypto.randomUUID()
-  const todoListId2 = crypto.randomUUID()
-
-  const startState: Todos = [
-    {
-      id: todoListId1,
-      title: 'What to learn',
-      filter: 'all'
-    },
-    {
-      id: todoListId2,
-      title: 'What to buy',
-      filter: 'all'
-    },
-  ]
-  const endState = todoListsReducer(startState, {
+  const action = {
     type: 'REMOVE_TODO',
-    id: todoListId1
-  })
+    id: 'todo-1'
+  } satisfies Action
+
+  const startState = createInitialState()
+  const endState = todoListsReducer(startState, action)
 
   expect(endState).toEqual([startState[1]])
   expect(startState).toHaveLength(2)
   expect(endState).not.toBe(startState)
 })
 test('changes the specified todo list title', () => {
-  const todoListId1 = crypto.randomUUID()
-  const todoListId2 = crypto.randomUUID()
-
   const newTodoListTitle = 'New Todo List'
 
   const action = {
     type: 'CHANGE_TODO_TITLE',
-    id: todoListId1,
+    id: 'todo-1',
     title: newTodoListTitle
   } satisfies Action
 
-  const startState: Todos = [
-    {
-      id: todoListId1,
-      title: 'What to learn',
-      filter: 'all'
-    },
-    {
-      id: todoListId2,
-      title: 'What to buy',
-      filter: 'all'
-    },
-  ]
+  const startState = createInitialState()
   const endState = todoListsReducer(startState, action)
 
+  expect(startState[0].title).toBe('What to learn')
+  expect(endState[0]).not.toBe(startState[0])
+  expect(endState[1]).toBe(startState[1])
   expect(endState).toHaveLength(2)
   expect(endState[0]).toEqual({
     ...startState[0],
     title: newTodoListTitle
   })
-  expect(endState[1]).toEqual(startState[1])
   expect(endState).not.toBe(startState)
 })
 test('changes the specified todo list filter', () => {
-  const todoListId1 = crypto.randomUUID()
-  const todoListId2 = crypto.randomUUID()
-
   const newTodoListFilter = 'active'
 
   const action = {
     type: 'CHANGE_TODO_FILTER',
-    id: todoListId1,
+    id: 'todo-1',
     filter: newTodoListFilter
   } satisfies Action
 
-  const startState: Todos = [
-    {
-      id: todoListId1,
-      title: 'What to learn',
-      filter: 'all'
-    },
-    {
-      id: todoListId2,
-      title: 'What to buy',
-      filter: 'all'
-    },
-  ]
+  const startState = createInitialState()
   const endState = todoListsReducer(startState, action)
 
+  expect(startState[0].filter).toBe('all')
+  expect(endState[0]).not.toBe(startState[0])
+  expect(endState[1]).toBe(startState[1])
   expect(endState).toHaveLength(2)
   expect(endState[0]).toEqual({
     ...startState[0],
     filter: newTodoListFilter
   })
-  expect(endState[1]).toEqual(startState[1])
   expect(endState).not.toBe(startState)
 })

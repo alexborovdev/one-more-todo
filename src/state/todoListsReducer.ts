@@ -22,16 +22,16 @@ const todoListsReducer = (state: Todos, action: Action): Todos => {
     }
 
     case 'CHANGE_TODO_TITLE': {
-      return state.map((todo) => todo.id === action.id ?
-        { ...todo, title: action.title } :
-        todo
+      return state.map((todo) => todo.id === action.id
+        ? { ...todo, title: action.title }
+        : todo
       )
     }
 
     case 'CHANGE_TODO_FILTER': {
-      return state.map((todo) => todo.id === action.id ?
-        { ...todo, filter: action.filter } :
-        todo
+      return state.map((todo) => todo.id === action.id
+        ? { ...todo, filter: action.filter }
+        : todo
       )
     }
 
