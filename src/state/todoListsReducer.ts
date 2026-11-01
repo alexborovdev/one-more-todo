@@ -1,10 +1,29 @@
 import type { Todos, Filter } from '@/types/todo'
 
-export type Action =
-  | { type: 'ADD_TODO'; title: string }
-  | { type: 'REMOVE_TODO'; id: string }
-  | { type: 'CHANGE_TODO_TITLE'; id: string; title: string }
-  | { type: 'CHANGE_TODO_FILTER'; id: string; filter: Filter }
+type Action =
+  | ReturnType<typeof addTodoAC>
+  | ReturnType<typeof removeTodoAC>
+  | ReturnType<typeof changeTodoTitleAC>
+  | ReturnType<typeof changeTodoFilterAC>
+
+export const addTodoAC = (title: string) => ({
+  type: 'ADD_TODO' as const,
+  title
+})
+export const removeTodoAC = (id: string) => ({
+  type: 'REMOVE_TODO' as const,
+  id
+})
+export const changeTodoTitleAC = (id: string, title: string) => ({
+  type: 'CHANGE_TODO_TITLE' as const,
+  id,
+  title
+})
+export const changeTodoFilterAC = (id: string, filter: Filter) => ({
+  type: 'CHANGE_TODO_FILTER' as const,
+  id,
+  filter
+})
 
 const todoListsReducer = (state: Todos, action: Action): Todos => {
   switch (action.type) {

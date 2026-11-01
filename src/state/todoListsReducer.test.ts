@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import type { Todos } from '@/types/todo'
-import todoListsReducer, { type Action } from './todoListsReducer'
+import todoListsReducer, { addTodoAC, removeTodoAC, changeTodoTitleAC, changeTodoFilterAC } from './todoListsReducer'
 
 const createInitialState = (): Todos => [
   {
@@ -18,11 +18,7 @@ const createInitialState = (): Todos => [
 test('adds a new todo list', () => {
   const newTodoListTitle = 'New Todo List'
 
-  const action = {
-    type: 'ADD_TODO',
-    title: newTodoListTitle
-  } satisfies Action
-
+  const action = addTodoAC(newTodoListTitle)
   const startState = createInitialState()
   const endState = todoListsReducer(startState, action)
 
@@ -37,11 +33,7 @@ test('adds a new todo list', () => {
   expect(endState).not.toBe(startState)
 })
 test('removes the specified todo list', () => {
-  const action = {
-    type: 'REMOVE_TODO',
-    id: 'todo-1'
-  } satisfies Action
-
+  const action = removeTodoAC('todo-1')
   const startState = createInitialState()
   const endState = todoListsReducer(startState, action)
 
@@ -52,12 +44,7 @@ test('removes the specified todo list', () => {
 test('changes the specified todo list title', () => {
   const newTodoListTitle = 'New Todo List'
 
-  const action = {
-    type: 'CHANGE_TODO_TITLE',
-    id: 'todo-1',
-    title: newTodoListTitle
-  } satisfies Action
-
+  const action = changeTodoTitleAC('todo-1', newTodoListTitle)
   const startState = createInitialState()
   const endState = todoListsReducer(startState, action)
 
@@ -74,12 +61,7 @@ test('changes the specified todo list title', () => {
 test('changes the specified todo list filter', () => {
   const newTodoListFilter = 'active'
 
-  const action = {
-    type: 'CHANGE_TODO_FILTER',
-    id: 'todo-1',
-    filter: newTodoListFilter
-  } satisfies Action
-
+  const action = changeTodoFilterAC('todo-1', newTodoListFilter)
   const startState = createInitialState()
   const endState = todoListsReducer(startState, action)
 
