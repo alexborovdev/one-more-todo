@@ -1,23 +1,10 @@
 import { useState } from 'react'
 import { AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography } from '@mui/material'
 import { Menu } from '@mui/icons-material'
+import type { Task, Filter, Todo, TasksByTodoId } from './types/todo'
 import AddItemForm from './AddItemForm'
 import TodoList from './TodoList'
 import './App.css'
-
-type Task = {
-  id: string
-  title: string
-  isDone: boolean
-}
-export type Tasks = Array<Task>
-export type Filters = 'all' | 'completed' | 'active'
-type Todo = {
-  id: string
-  title: string
-  filter: Filters
-}
-type TasksByTodoId = Record<string, Tasks>
 
 const todoListId1 = crypto.randomUUID()
 const todoListId2 = crypto.randomUUID()
@@ -127,7 +114,7 @@ const App = () => {
       )
     }))
   }
-  const changeFilter = (id: string, value: Filters) => {
+  const changeFilter = (id: string, value: Filter) => {
     setTodoLists(prevState =>
       prevState.map(todoList =>
         todoList.id === id

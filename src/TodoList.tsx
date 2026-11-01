@@ -1,20 +1,19 @@
 import { Button, Checkbox, IconButton } from '@mui/material'
 import { Delete } from '@mui/icons-material'
+import type { Tasks, Filter } from './types/todo'
 import AddItemForm from './AddItemForm'
 import EditableSpan from './EditableSpan'
-
-import type { Tasks, Filters } from './App'
 
 type Props = {
   id: string
   title: string
   tasks: Tasks
-  filter: Filters
+  filter: Filter
   addNewTask: (todoId: string, title: string) => void
   removeTask: (todoId: string, taskId: string) => void
   removeTodo: (todoId: string) => void
   changeStatus: (todoId: string, taskId: string) => void
-  changeFilter: (todoId: string, value: Filters) => void
+  changeFilter: (todoId: string, value: Filter) => void
   changeTaskTitle: (todoId: string, taskId: string, newTitle: string) => void
   changeTodoTitle: (todoId: string, newTitle: string) => void
 }
