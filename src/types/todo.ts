@@ -14,4 +14,6 @@ export type Todo = {
   filter: Filter
 }
 
+export type Todos = Todo[]
+
 export type TasksByTodoId = Record<string, Tasks>
