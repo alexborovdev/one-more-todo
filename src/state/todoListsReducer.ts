@@ -1,9 +1,8 @@
 import type { Todos } from '@/types/todo'
 
-type Action = {
-  type: string,
-  [key: string]: any
-}
+type Action =
+  | { type: 'REMOVE_TODO'; id: string }
+  | { type: 'ADD_TODO'; title: string }
 
 const todoListsReducer = (state: Todos, action: Action): Todos => {
   switch (action.type) {
