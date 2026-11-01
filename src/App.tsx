@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography } from '@mui/material'
 import { Menu } from '@mui/icons-material'
-import type { Task, Filter, Todo, TasksByTodoId } from './types/todo'
-import AddItemForm from './AddItemForm'
-import TodoList from './TodoList'
-import './App.css'
+import type { Task, Filter, Todo, TasksByTodoId } from '@/types/todo'
+import AddItemForm from '@/AddItemForm'
+import TodoList from '@/TodoList'
+import '@/App.css'
 
 const todoListId1 = crypto.randomUUID()
 const todoListId2 = crypto.randomUUID()

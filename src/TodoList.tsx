@@ -1,8 +1,8 @@
 import { Button, Checkbox, IconButton } from '@mui/material'
 import { Delete } from '@mui/icons-material'
-import type { Tasks, Filter } from './types/todo'
-import AddItemForm from './AddItemForm'
-import EditableSpan from './EditableSpan'
+import type { Tasks, Filter } from '@/types/todo'
+import AddItemForm from '@/AddItemForm'
+import EditableSpan from '@/EditableSpan'
 
 type Props = {
   id: string
