@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import type { TasksByTodoId } from '@/types/todo'
-import taskReducer, { removeTaskAC } from './taskReducer'
+import taskReducer, { addTaskAC, removeTaskAC } from './taskReducer'
 
 const createInitialState = (): TasksByTodoId => (
   {
@@ -31,6 +31,26 @@ const createInitialState = (): TasksByTodoId => (
   }
 )
 
+test('adds a new task to the specified todo list', () => {
+  const newTaskTitle = 'New Task'
+
+  const action = addTaskAC('todo-1', newTaskTitle)
+  const startState = createInitialState()
+  const endState = taskReducer(startState, action)
+
+  expect(endState['todo-1']).toHaveLength(3)
+  expect(endState['todo-2']).toHaveLength(2)
+  expect(endState['todo-1'][0]).toEqual({
+    id: expect.any(String),
+    title: newTaskTitle,
+    isDone: false
+  })
+  expect(endState['todo-1'].slice(1)).toEqual(startState['todo-1'])
+  expect(endState).not.toBe(startState)
+  expect(endState['todo-1']).not.toBe(startState['todo-1'])
+  expect(endState['todo-2']).toBe(startState['todo-2'])
+  expect(startState['todo-1']).toHaveLength(2)
+})
 test('removes the specified task from the specified todo list', () => {
   const action = removeTaskAC('todo-1', 'task-1')
   const startState = createInitialState()
