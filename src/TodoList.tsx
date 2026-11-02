@@ -9,13 +9,13 @@ type Props = {
   title: string
   tasks: Tasks
   filter: Filter
+  removeTodoList: (todoId: string) => void
+  changeTodoTitle: (todoId: string, newTitle: string) => void
   addNewTask: (todoId: string, title: string) => void
   removeTask: (todoId: string, taskId: string) => void
-  removeTodo: (todoId: string) => void
+  changeTaskTitle: (todoId: string, taskId: string, newTitle: string) => void
   changeStatus: (todoId: string, taskId: string) => void
   changeFilter: (todoId: string, value: Filter) => void
-  changeTaskTitle: (todoId: string, taskId: string, newTitle: string) => void
-  changeTodoTitle: (todoId: string, newTitle: string) => void
 }
 
 const TodoList = (props: Props) => {
@@ -24,13 +24,13 @@ const TodoList = (props: Props) => {
     title,
     tasks,
     filter,
+    removeTodoList,
+    changeTodoTitle,
     addNewTask,
     removeTask,
-    removeTodo,
-    changeStatus,
-    changeFilter,
     changeTaskTitle,
-    changeTodoTitle,
+    changeStatus,
+    changeFilter
   } = props
 
   const addTask = (title: string) => {
@@ -38,7 +38,7 @@ const TodoList = (props: Props) => {
   }
 
   const onChangeTodoTitleChange = (title: string) => changeTodoTitle(id, title)
-  const onDeleteTodoButtonClick = () => removeTodo(id)
+  const onDeleteTodoButtonClick = () => removeTodoList(id)
   const onChangeAllFilterButtonClick = () => changeFilter(id, 'all')
   const onChangeActiveFilterButtonClick = () => changeFilter(id, 'active')
   const onChangeCompletedFilterButtonClick = () => changeFilter(id, 'completed')
