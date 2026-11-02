@@ -1,47 +1,52 @@
+import { useDispatch, useSelector } from 'react-redux'
 import { Button, Checkbox, IconButton } from '@mui/material'
 import { Delete } from '@mui/icons-material'
-import type { Tasks, Filter } from '@/types/todo'
+import type { RootState } from '@/state/store'
+import { changeTodoFilterAC, changeTodoTitleAC, removeTodoAC } from '@/state/todoListsReducer'
+import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from '@/state/tasksReducer'
 import AddItemForm from '@/AddItemForm'
 import EditableSpan from '@/EditableSpan'
 
 type Props = {
   id: string
-  title: string
-  tasks: Tasks
-  filter: Filter
-  removeTodoList: (todoId: string) => void
-  changeTodoTitle: (todoId: string, newTitle: string) => void
-  addNewTask: (todoId: string, title: string) => void
-  removeTask: (todoId: string, taskId: string) => void
-  changeTaskTitle: (todoId: string, taskId: string, newTitle: string) => void
-  changeStatus: (todoId: string, taskId: string) => void
-  changeFilter: (todoId: string, value: Filter) => void
 }
 
 const TodoList = (props: Props) => {
-  const {
-    id,
-    title,
-    tasks,
-    filter,
-    removeTodoList,
-    changeTodoTitle,
-    addNewTask,
-    removeTask,
-    changeTaskTitle,
-    changeStatus,
-    changeFilter
-  } = props
+  const { id } = props
+
+  const dispatch = useDispatch()
+  const tasks = useSelector((state: RootState) => state.tasks[id])
+  const todo = useSelector((state: RootState) => state.todoLists.find(todo => todo.id === id))
+
+  if (!todo) return null
+
+  const { title, filter } = todo
+
+  const filteredTasks = tasks.filter(task => {
+    if (filter === 'active') return !task.isDone
+    if (filter === 'completed') return task.isDone
+    return true
+  })
 
   const addTask = (title: string) => {
-    addNewTask(id, title)
+    dispatch(addTaskAC(id, title))
   }
 
-  const onChangeTodoTitleChange = (title: string) => changeTodoTitle(id, title)
-  const onDeleteTodoButtonClick = () => removeTodoList(id)
-  const onChangeAllFilterButtonClick = () => changeFilter(id, 'all')
-  const onChangeActiveFilterButtonClick = () => changeFilter(id, 'active')
-  const onChangeCompletedFilterButtonClick = () => changeFilter(id, 'completed')
+  const onChangeTodoTitleChange = (title: string) => {
+    dispatch(changeTodoTitleAC(id, title))
+  }
+  const onDeleteTodoButtonClick = () => {
+    dispatch(removeTodoAC(id))
+  }
+  const onChangeAllFilterButtonClick = () => {
+    dispatch(changeTodoFilterAC(id, 'all'))
+  }
+  const onChangeActiveFilterButtonClick = () => {
+    dispatch(changeTodoFilterAC(id, 'active'))
+  }
+  const onChangeCompletedFilterButtonClick = () => {
+    dispatch(changeTodoFilterAC(id, 'completed'))
+  }
 
   return (
     <div>
@@ -60,10 +65,16 @@ const TodoList = (props: Props) => {
         addNewItem={addTask}
       />
       <ul>
-        {tasks.map(({ id: taskId, title, isDone }) => {
-          const onChangeStatusCheckboxCheck = () => changeStatus(id, taskId)
-          const onRemoveTaskButtonClick = () => removeTask(id, taskId)
-          const onChangeInputValueChange = (newValue: string) => changeTaskTitle(id, taskId, newValue)
+        {filteredTasks.map(({ id: taskId, title, isDone }) => {
+          const onChangeStatusCheckboxCheck = () => {
+            dispatch(changeTaskStatusAC(id, taskId))
+          }
+          const onRemoveTaskButtonClick = () => {
+            dispatch(removeTaskAC(id, taskId))
+          }
+          const onChangeInputValueChange = (newValue: string) => {
+            dispatch(changeTaskTitleAC(id, taskId, newValue))
+          }
 
           return (
             <div key={taskId}>
