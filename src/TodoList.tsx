@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button, Checkbox, IconButton } from '@mui/material'
 import { Delete } from '@mui/icons-material'
 import type { RootState } from '@/state/store'
+import type { Filter } from '@/types/todo'
 import { changeTodoFilterAC, changeTodoTitleAC, removeTodoAC } from '@/state/todoListsReducer'
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from '@/state/tasksReducer'
 import AddItemForm from '@/AddItemForm'
@@ -15,7 +16,7 @@ const TodoList = (props: Props) => {
   const { id } = props
 
   const dispatch = useDispatch()
-  const tasks = useSelector((state: RootState) => state.tasks[id])
+  const tasks = useSelector((state: RootState) => state.tasks[id] ?? [])
   const todo = useSelector((state: RootState) => state.todoLists.find(todo => todo.id === id))
 
   if (!todo) return null
@@ -38,14 +39,8 @@ const TodoList = (props: Props) => {
   const onDeleteTodoButtonClick = () => {
     dispatch(removeTodoAC(id))
   }
-  const onChangeAllFilterButtonClick = () => {
-    dispatch(changeTodoFilterAC(id, 'all'))
-  }
-  const onChangeActiveFilterButtonClick = () => {
-    dispatch(changeTodoFilterAC(id, 'active'))
-  }
-  const onChangeCompletedFilterButtonClick = () => {
-    dispatch(changeTodoFilterAC(id, 'completed'))
+  const changeFilterButtonClick = (filter: Filter) => {
+    dispatch(changeTodoFilterAC(id, filter))
   }
 
   return (
@@ -99,19 +94,19 @@ const TodoList = (props: Props) => {
         <Button variant={filter === 'all' ? 'contained' : 'text'}
                 color="success"
                 type="button"
-                onClick={onChangeAllFilterButtonClick}>
+                onClick={() => changeFilterButtonClick('all')}>
           All
         </Button>
         <Button variant={filter === 'active' ? 'contained' : 'text'}
                 color="primary"
                 type="button"
-                onClick={onChangeActiveFilterButtonClick}>
+                onClick={() => changeFilterButtonClick('active')}>
           Active
         </Button>
         <Button variant={filter === 'completed' ? 'contained' : 'text'}
                 color="secondary"
                 type="button"
-                onClick={onChangeCompletedFilterButtonClick}>
+                onClick={() => changeFilterButtonClick('completed')}>
           Completed
         </Button>
       </div>
