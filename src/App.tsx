@@ -77,28 +77,22 @@ const App = () => {
     dispatchToTasks(action)
   }
   const changeTodoTitle = (todoId: string, newTitle: string) => {
-    const action = changeTodoTitleAC(todoId, newTitle)
-    dispatchToTodoLists(action)
+    dispatchToTodoLists(changeTodoTitleAC(todoId, newTitle))
   }
   const addNewTask = (todoId: string, title: string) => {
-    const action = addTaskAC(todoId, title)
-    dispatchToTasks(action)
+    dispatchToTasks(addTaskAC(todoId, title))
   }
   const removeTask = (todoId: string, taskId: string) => {
-    const action = removeTaskAC(todoId, taskId)
-    dispatchToTasks(action)
+    dispatchToTasks(removeTaskAC(todoId, taskId))
   }
   const changeTaskTitle = (todoId: string, taskId: string, newTitle: string) => {
-    const action = changeTaskTitleAC(todoId, taskId, newTitle)
-    dispatchToTasks(action)
+    dispatchToTasks(changeTaskTitleAC(todoId, taskId, newTitle))
   }
   const changeStatus = (todoId: string, taskId: string) => {
-    const action = changeTaskStatusAC(todoId, taskId)
-    dispatchToTasks(action)
+    dispatchToTasks(changeTaskStatusAC(todoId, taskId))
   }
   const changeFilter = (id: string, value: Filter) => {
-    const action = changeTodoFilterAC(id, value)
-    dispatchToTodoLists(action)
+    dispatchToTodoLists(changeTodoFilterAC(id, value))
   }
 
   return (
