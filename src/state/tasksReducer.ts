@@ -1,5 +1,5 @@
 import type { TasksByTodoId } from '@/types/todo'
-import { addTodoAC, removeTodoAC, todoListId1, todoListId2 } from './todoListsReducer'
+import { addTodoAC, removeTodoAC } from './todoListsReducer'
 
 type Action =
   | ReturnType<typeof addTaskAC>
@@ -32,47 +32,7 @@ export const changeTaskTitleAC = (todoId: string, taskId: string, title: string)
   title
 })
 
-const initialState: TasksByTodoId = {
-  [todoListId1]: [
-    {
-      id: crypto.randomUUID(),
-      title: 'HTML&CSS',
-      isDone: true
-    },
-    {
-      id: crypto.randomUUID(),
-      title: 'JS',
-      isDone: true
-    },
-    {
-      id: crypto.randomUUID(),
-      title: 'React',
-      isDone: true
-    },
-    {
-      id: crypto.randomUUID(),
-      title: 'Redux',
-      isDone: false
-    }
-  ],
-  [todoListId2]: [
-    {
-      id: crypto.randomUUID(),
-      title: 'Apples',
-      isDone: true
-    },
-    {
-      id: crypto.randomUUID(),
-      title: 'Bananas',
-      isDone: false
-    },
-    {
-      id: crypto.randomUUID(),
-      title: 'Potatoes',
-      isDone: false
-    }
-  ]
-}
+const initialState: TasksByTodoId = {}
 
 const tasksReducer = (state: TasksByTodoId = initialState, action: Action): TasksByTodoId => {
   switch (action.type) {

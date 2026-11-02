@@ -26,21 +26,7 @@ export const changeTodoFilterAC = (id: string, filter: Filter) => ({
   filter
 })
 
-export const todoListId1 = crypto.randomUUID()
-export const todoListId2 = crypto.randomUUID()
-
-const initialState: Todos = [
-  {
-    id: todoListId1,
-    title: 'What to learn',
-    filter: 'all'
-  },
-  {
-    id: todoListId2,
-    title: 'What to buy',
-    filter: 'all'
-  }
-]
+const initialState: Todos = []
 
 const todoListsReducer = (state: Todos = initialState, action: Action): Todos => {
   switch (action.type) {
