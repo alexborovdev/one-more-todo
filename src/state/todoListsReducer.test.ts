@@ -25,7 +25,7 @@ test('adds a new todo list', () => {
   expect(endState.slice(1)).toEqual(startState)
   expect(endState).toHaveLength(3)
   expect(endState[0]).toEqual({
-    id: expect.any(String),
+    id: action.id,
     title: newTodoListTitle,
     filter: 'all'
   })

@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest'
 import type { TasksByTodoId } from '@/types/todo'
 import taskReducer, { addTaskAC, removeTaskAC, changeTaskStatusAC, changeTaskTitleAC } from './taskReducer'
-import { addTodoAC } from './todoListsReducer'
+import { addTodoAC, removeTodoAC } from './todoListsReducer'
 
 const createInitialState = (): TasksByTodoId => (
   {
@@ -100,4 +100,14 @@ test('adds a new array when a new todo list was added', () => {
   expect(endState['todo-1']).toBe(startState['todo-1'])
   expect(endState['todo-2']).toBe(startState['todo-2'])
   expect(endState).not.toBe(startState)
+})
+test('removes the task array when the specified todo list was removed', () => {
+  const action = removeTodoAC('todo-1')
+  const startState = createInitialState()
+  const endState = taskReducer(startState, action)
+
+  expect(endState).not.toHaveProperty('todo-1')
+  expect(endState['todo-2']).toBe(startState['todo-2'])
+  expect(endState).not.toBe(startState)
+  expect(startState).toHaveProperty('todo-1')
 })
