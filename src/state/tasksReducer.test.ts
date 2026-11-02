@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import type { TasksByTodoId } from '@/types/todo'
-import taskReducer, { addTaskAC, removeTaskAC, changeTaskStatusAC, changeTaskTitleAC } from './taskReducer'
+import tasksReducer, { addTaskAC, removeTaskAC, changeTaskStatusAC, changeTaskTitleAC } from './tasksReducer'
 import { addTodoAC, removeTodoAC } from './todoListsReducer'
 
 const createInitialState = (): TasksByTodoId => (
@@ -37,7 +37,7 @@ test('adds a new task to the specified todo list', () => {
 
   const action = addTaskAC('todo-1', newTaskTitle)
   const startState = createInitialState()
-  const endState = taskReducer(startState, action)
+  const endState = tasksReducer(startState, action)
 
   expect(endState['todo-1']).toHaveLength(3)
   expect(endState['todo-2']).toHaveLength(2)
@@ -55,7 +55,7 @@ test('adds a new task to the specified todo list', () => {
 test('removes the specified task from the specified todo list', () => {
   const action = removeTaskAC('todo-1', 'task-1')
   const startState = createInitialState()
-  const endState = taskReducer(startState, action)
+  const endState = tasksReducer(startState, action)
 
   expect(endState['todo-1']).toEqual([startState['todo-1'][1]])
   expect(endState['todo-2']).toEqual(startState['todo-2'])
@@ -66,7 +66,7 @@ test('removes the specified task from the specified todo list', () => {
 test('changes the specified task status in the specified todo list', () => {
   const action = changeTaskStatusAC('todo-1', 'task-1')
   const startState = createInitialState()
-  const endState = taskReducer(startState, action)
+  const endState = tasksReducer(startState, action)
 
   expect(endState['todo-1'][0].isDone).toBe(true)
   expect(endState['todo-1'][1]).toBe(startState['todo-1'][1])
@@ -81,7 +81,7 @@ test('changes the specified task title in the specified todo list', () => {
 
   const action = changeTaskTitleAC('todo-1', 'task-1', newTaskTitle)
   const startState = createInitialState()
-  const endState = taskReducer(startState, action)
+  const endState = tasksReducer(startState, action)
 
   expect(endState['todo-1'][0].title).toBe(newTaskTitle)
   expect(startState['todo-1'][0].title).toBe('Task 1')
@@ -94,7 +94,7 @@ test('changes the specified task title in the specified todo list', () => {
 test('adds a new array when a new todo list was added', () => {
   const action = addTodoAC('New Todo List')
   const startState = createInitialState()
-  const endState = taskReducer(startState, action)
+  const endState = tasksReducer(startState, action)
 
   expect(endState[action.id]).toEqual([])
   expect(endState['todo-1']).toBe(startState['todo-1'])
@@ -104,7 +104,7 @@ test('adds a new array when a new todo list was added', () => {
 test('removes the task array when the specified todo list was removed', () => {
   const action = removeTodoAC('todo-1')
   const startState = createInitialState()
-  const endState = taskReducer(startState, action)
+  const endState = tasksReducer(startState, action)
 
   expect(endState).not.toHaveProperty('todo-1')
   expect(endState['todo-2']).toBe(startState['todo-2'])

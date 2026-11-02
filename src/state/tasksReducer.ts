@@ -1,5 +1,5 @@
 import type { TasksByTodoId } from '@/types/todo'
-import { addTodoAC, removeTodoAC } from './todoListsReducer'
+import { addTodoAC, removeTodoAC, todoListId1, todoListId2 } from './todoListsReducer'
 
 type Action =
   | ReturnType<typeof addTaskAC>
@@ -12,6 +12,7 @@ type Action =
 export const addTaskAC = (todoId: string, title: string) => ({
   type: 'ADD_TASK' as const,
   todoId,
+  id: crypto.randomUUID(),
   title
 })
 export const removeTaskAC = (todoId: string, taskId: string) => ({
@@ -31,14 +32,56 @@ export const changeTaskTitleAC = (todoId: string, taskId: string, title: string)
   title
 })
 
-const taskReducer = (state: TasksByTodoId, action: Action): TasksByTodoId => {
+const initialState: TasksByTodoId = {
+  [todoListId1]: [
+    {
+      id: crypto.randomUUID(),
+      title: 'HTML&CSS',
+      isDone: true
+    },
+    {
+      id: crypto.randomUUID(),
+      title: 'JS',
+      isDone: true
+    },
+    {
+      id: crypto.randomUUID(),
+      title: 'React',
+      isDone: true
+    },
+    {
+      id: crypto.randomUUID(),
+      title: 'Redux',
+      isDone: false
+    }
+  ],
+  [todoListId2]: [
+    {
+      id: crypto.randomUUID(),
+      title: 'Apples',
+      isDone: true
+    },
+    {
+      id: crypto.randomUUID(),
+      title: 'Bananas',
+      isDone: false
+    },
+    {
+      id: crypto.randomUUID(),
+      title: 'Potatoes',
+      isDone: false
+    }
+  ]
+}
+
+const tasksReducer = (state: TasksByTodoId = initialState, action: Action): TasksByTodoId => {
   switch (action.type) {
     case 'ADD_TASK': {
       return {
         ...state,
         [action.todoId]: [
           {
-            id: crypto.randomUUID(),
+            id: action.id,
             title: action.title,
             isDone: false
           },
@@ -84,8 +127,8 @@ const taskReducer = (state: TasksByTodoId, action: Action): TasksByTodoId => {
     }
 
     default:
-      throw new Error('Invalid action type')
+      return state
   }
 }
 
-export default taskReducer
+export default tasksReducer
