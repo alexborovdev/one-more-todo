@@ -41,23 +41,6 @@ test('removes the specified todo list', () => {
   expect(startState).toHaveLength(2)
   expect(endState).not.toBe(startState)
 })
-test('changes the specified todo list title', () => {
-  const newTodoListTitle = 'New Todo List'
-
-  const action = changeTodoTitleAC('todo-1', newTodoListTitle)
-  const startState = createInitialState()
-  const endState = todoListsReducer(startState, action)
-
-  expect(startState[0].title).toBe('What to learn')
-  expect(endState[0]).not.toBe(startState[0])
-  expect(endState[1]).toBe(startState[1])
-  expect(endState).toHaveLength(2)
-  expect(endState[0]).toEqual({
-    ...startState[0],
-    title: newTodoListTitle
-  })
-  expect(endState).not.toBe(startState)
-})
 test('changes the specified todo list filter', () => {
   const newTodoListFilter = 'active'
 
@@ -72,6 +55,23 @@ test('changes the specified todo list filter', () => {
   expect(endState[0]).toEqual({
     ...startState[0],
     filter: newTodoListFilter
+  })
+  expect(endState).not.toBe(startState)
+})
+test('changes the specified todo list title', () => {
+  const newTodoListTitle = 'New Todo List'
+
+  const action = changeTodoTitleAC('todo-1', newTodoListTitle)
+  const startState = createInitialState()
+  const endState = todoListsReducer(startState, action)
+
+  expect(startState[0].title).toBe('What to learn')
+  expect(endState[0]).not.toBe(startState[0])
+  expect(endState[1]).toBe(startState[1])
+  expect(endState).toHaveLength(2)
+  expect(endState[0]).toEqual({
+    ...startState[0],
+    title: newTodoListTitle
   })
   expect(endState).not.toBe(startState)
 })

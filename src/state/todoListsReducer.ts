@@ -3,8 +3,8 @@ import type { Todos, Filter } from '@/types/todo'
 type Action =
   | ReturnType<typeof addTodoAC>
   | ReturnType<typeof removeTodoAC>
-  | ReturnType<typeof changeTodoTitleAC>
   | ReturnType<typeof changeTodoFilterAC>
+  | ReturnType<typeof changeTodoTitleAC>
 
 export const addTodoAC = (title: string) => ({
   type: 'ADD_TODO' as const,
@@ -35,21 +35,18 @@ const todoListsReducer = (state: Todos, action: Action): Todos => {
       },
         ...state]
     }
-
     case 'REMOVE_TODO': {
       return state.filter(todo => todo.id !== action.id)
     }
-
-    case 'CHANGE_TODO_TITLE': {
-      return state.map((todo) => todo.id === action.id
-        ? { ...todo, title: action.title }
-        : todo
-      )
-    }
-
     case 'CHANGE_TODO_FILTER': {
       return state.map((todo) => todo.id === action.id
         ? { ...todo, filter: action.filter }
+        : todo
+      )
+    }
+    case 'CHANGE_TODO_TITLE': {
+      return state.map((todo) => todo.id === action.id
+        ? { ...todo, title: action.title }
         : todo
       )
     }
