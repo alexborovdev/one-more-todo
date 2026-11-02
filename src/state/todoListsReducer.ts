@@ -8,6 +8,7 @@ type Action =
 
 export const addTodoAC = (title: string) => ({
   type: 'ADD_TODO' as const,
+  id: crypto.randomUUID(),
   title
 })
 export const removeTodoAC = (id: string) => ({
@@ -29,7 +30,7 @@ const todoListsReducer = (state: Todos, action: Action): Todos => {
   switch (action.type) {
     case 'ADD_TODO': {
       return [{
-        id: crypto.randomUUID(),
+        id: action.id,
         title: action.title,
         filter: 'all'
       },

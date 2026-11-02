@@ -1,10 +1,12 @@
 import type { TasksByTodoId } from '@/types/todo'
+import { addTodoAC } from './todoListsReducer'
 
 type Action =
   | ReturnType<typeof addTaskAC>
   | ReturnType<typeof removeTaskAC>
   | ReturnType<typeof changeTaskStatusAC>
   | ReturnType<typeof changeTaskTitleAC>
+  | ReturnType<typeof addTodoAC>
 
 export const addTaskAC = (todoId: string, title: string) => ({
   type: 'ADD_TASK' as const,
@@ -67,6 +69,12 @@ const taskReducer = (state: TasksByTodoId, action: Action): TasksByTodoId => {
             ? { ...task, title: action.title }
             : task
         )
+      }
+    }
+    case 'ADD_TODO': {
+      return {
+        ...state,
+        [action.id]: []
       }
     }
 
