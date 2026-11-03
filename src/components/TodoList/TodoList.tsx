@@ -1,13 +1,15 @@
 import { memo, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Checkbox, IconButton } from '@mui/material'
+import { Checkbox, IconButton } from '@mui/material'
 import { Delete } from '@mui/icons-material'
-import type { RootState } from '@/state/store'
+import type { RootState } from '@/app/store'
 import type { Filter } from '@/types/todo'
 import { changeTodoFilterAC, changeTodoTitleAC, removeTodoAC } from '@/state/todoListsReducer'
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from '@/state/tasksReducer'
-import AddItemForm from '@/AddItemForm'
-import EditableSpan from '@/EditableSpan'
+import AddItemForm from '@/components/AddItemForm'
+import EditableSpan from '@/components/EditableSpan'
+import TodoListTitle from '@/components/TodoListTitle'
+import FilterButtons from '@/components/FilterButtons'
 
 type Props = {
   id: string
@@ -48,17 +50,11 @@ const TodoList = memo((props: Props) => {
 
   return (
     <div>
-      <h3>
-        <EditableSpan
-          title={title}
-          onChange={onChangeTodoTitleChange}
-        />
-        <IconButton
-          type="button"
-          onClick={onDeleteTodoButtonClick}>
-          <Delete />
-        </IconButton>
-      </h3>
+      <TodoListTitle
+        title={title}
+        onChangeTodoTitleChange={onChangeTodoTitleChange}
+        onDeleteTodoButtonClick={onDeleteTodoButtonClick}
+      />
       <AddItemForm
         addNewItem={addTask}
       />
@@ -93,26 +89,10 @@ const TodoList = memo((props: Props) => {
           )
         })}
       </ul>
-      <div>
-        <Button variant={filter === 'all' ? 'contained' : 'text'}
-                color="success"
-                type="button"
-                onClick={() => changeFilterButtonClick('all')}>
-          All
-        </Button>
-        <Button variant={filter === 'active' ? 'contained' : 'text'}
-                color="primary"
-                type="button"
-                onClick={() => changeFilterButtonClick('active')}>
-          Active
-        </Button>
-        <Button variant={filter === 'completed' ? 'contained' : 'text'}
-                color="secondary"
-                type="button"
-                onClick={() => changeFilterButtonClick('completed')}>
-          Completed
-        </Button>
-      </div>
+      <FilterButtons
+        filter={filter}
+        changeFilterButtonClick={changeFilterButtonClick}
+      />
     </div>
   )
 })
