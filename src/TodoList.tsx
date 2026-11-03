@@ -1,3 +1,4 @@
+import { memo, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Checkbox, IconButton } from '@mui/material'
 import { Delete } from '@mui/icons-material'
@@ -12,8 +13,10 @@ type Props = {
   id: string
 }
 
-const TodoList = (props: Props) => {
+const TodoList = memo((props: Props) => {
   const { id } = props
+
+  console.log('TodoList has been called')
 
   const dispatch = useDispatch()
   const tasks = useSelector((state: RootState) => state.tasks[id] ?? [])
@@ -29,13 +32,13 @@ const TodoList = (props: Props) => {
     return true
   })
 
-  const addTask = (title: string) => {
+  const addTask = useCallback((title: string) => {
     dispatch(addTaskAC(id, title))
-  }
+  }, [dispatch, id])
 
-  const onChangeTodoTitleChange = (title: string) => {
+  const onChangeTodoTitleChange = useCallback((title: string) => {
     dispatch(changeTodoTitleAC(id, title))
-  }
+  }, [dispatch, id])
   const onDeleteTodoButtonClick = () => {
     dispatch(removeTodoAC(id))
   }
@@ -112,6 +115,6 @@ const TodoList = (props: Props) => {
       </div>
     </div>
   )
-}
+})
 
 export default TodoList

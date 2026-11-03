@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type KeyboardEvent } from 'react'
+import { memo, useState, type ChangeEvent, type KeyboardEvent } from 'react'
 import { TextField } from '@mui/material'
 
 type Props = {
@@ -6,11 +6,13 @@ type Props = {
   onChange: (value: string) => void
 }
 
-const EditableSpan = (props: Props) => {
+const EditableSpan = memo((props: Props) => {
   const {
     title,
     onChange
   } = props
+
+  console.log('EditableSpan has been called')
 
   const [editMode, setEditMode] = useState(false)
   const [inputValue, setInputValue] = useState(title)
@@ -70,6 +72,6 @@ const EditableSpan = (props: Props) => {
       onKeyDown={onInputKeyDown}
       onBlur={activateViewMode}
     />
-}
+})
 
 export default EditableSpan

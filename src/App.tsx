@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography } from '@mui/material'
 import { Menu } from '@mui/icons-material'
@@ -8,12 +9,14 @@ import TodoList from '@/TodoList'
 import '@/App.css'
 
 const App = () => {
+  console.log('App has been called')
+
   const dispatch = useDispatch()
   const todoLists = useSelector((state: RootState) => state.todoLists)
 
-  const addNewTodoList = (title: string) => {
+  const addNewTodoList = useCallback((title: string) => {
     dispatch(addTodoAC(title))
-  }
+  }, [dispatch])
 
   return (
     <div className="App">
