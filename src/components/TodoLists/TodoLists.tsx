@@ -1,21 +1,23 @@
+import { shallowEqual, useSelector } from 'react-redux'
 import { Grid, Paper } from '@mui/material'
-import { useSelector } from 'react-redux'
 import type { RootState } from '@/app/store'
 import TodoList from '@/components/TodoList'
-import { memo } from 'react'
 
-const TodoLists = memo(() => {
+const TodoLists = () => {
   console.log('TodoLists has been called')
 
-  const todoLists = useSelector((state: RootState) => state.todoLists)
+  const todoIds = useSelector(
+    (state: RootState) => state.todoLists.map(todo => todo.id),
+    shallowEqual
+  )
 
-  return todoLists.map(({ id }) => (
+  return todoIds.map(id => (
     <Grid key={id}>
-      <Paper style={{ padding: '10px' }}>
+      <Paper sx={{ p: 1.25 }}>
         <TodoList id={id} />
       </Paper>
     </Grid>
   ))
-})
+}
 
 export default TodoLists
