@@ -2,6 +2,8 @@ import { AppBar, IconButton, Toolbar, Typography } from '@mui/material'
 import { Menu } from '@mui/icons-material'
 
 const Header = () => {
+  console.log('Header has been called')
+
   return (
     <AppBar position="static">
       <Toolbar>

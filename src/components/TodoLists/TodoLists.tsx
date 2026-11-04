@@ -2,8 +2,11 @@ import { Grid, Paper } from '@mui/material'
 import { useSelector } from 'react-redux'
 import type { RootState } from '@/app/store'
 import TodoList from '@/components/TodoList'
+import { memo } from 'react'
 
-const TodoLists = () => {
+const TodoLists = memo(() => {
+  console.log('TodoLists has been called')
+
   const todoLists = useSelector((state: RootState) => state.todoLists)
 
   return todoLists.map(({ id }) => (
@@ -13,6 +16,6 @@ const TodoLists = () => {
       </Paper>
     </Grid>
   ))
-}
+})
 
 export default TodoLists
