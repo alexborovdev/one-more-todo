@@ -1,15 +1,16 @@
 import type { Todos, Filter } from '@/types/todo'
+import type { ApiTodo } from '@/api/todoAPI.ts'
 
 type Action =
   | ReturnType<typeof addTodoAC>
   | ReturnType<typeof removeTodoAC>
   | ReturnType<typeof changeTodoFilterAC>
   | ReturnType<typeof changeTodoTitleAC>
+  | ReturnType<typeof setTodosAC>
 
-export const addTodoAC = (title: string) => ({
+export const addTodoAC = (todo: ApiTodo) => ({
   type: 'ADD_TODO' as const,
-  id: crypto.randomUUID(),
-  title
+  todo
 })
 export const removeTodoAC = (id: string) => ({
   type: 'REMOVE_TODO' as const,
@@ -25,18 +26,23 @@ export const changeTodoFilterAC = (id: string, filter: Filter) => ({
   id,
   filter
 })
+export const setTodosAC = (todos: ApiTodo[]) => ({
+  type: 'SET_TODOS' as const,
+  todos
+})
 
 const initialState: Todos = []
 
 const todoListsReducer = (state: Todos = initialState, action: Action): Todos => {
   switch (action.type) {
     case 'ADD_TODO': {
-      return [{
-        id: action.id,
-        title: action.title,
-        filter: 'all'
-      },
-        ...state]
+      return [
+        {
+          ...action.todo,
+          filter: 'all'
+        },
+        ...state
+      ]
     }
     case 'REMOVE_TODO': {
       return state.filter(todo => todo.id !== action.id)
@@ -52,6 +58,12 @@ const todoListsReducer = (state: Todos = initialState, action: Action): Todos =>
         ? { ...todo, title: action.title }
         : todo
       )
+    }
+    case 'SET_TODOS': {
+      return action.todos.map(todo => ({
+        ...todo,
+        filter: 'all' as const
+      }))
     }
 
     default:

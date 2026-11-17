@@ -1,5 +1,10 @@
 {
-  "todo-lists": [],
+  "todo-lists": [
+    {
+      "id": "1",
+      "title": "Learn Redux"
+    }
+  ],
   "tasks": [],
   "$schema": "./node_modules/json-server/schema.json"
 }
