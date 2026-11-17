@@ -18,14 +18,17 @@ const createInitialState = (): Todos => [
 test('adds a new todo list', () => {
   const newTodoListTitle = 'New Todo List'
 
-  const action = addTodoAC(newTodoListTitle)
+  const action = addTodoAC({
+    id: 'todo-1',
+    title: newTodoListTitle
+  })
   const startState = createInitialState()
   const endState = todoListsReducer(startState, action)
 
   expect(endState.slice(1)).toEqual(startState)
   expect(endState).toHaveLength(3)
   expect(endState[0]).toEqual({
-    id: action.id,
+    id: action.todo.id,
     title: newTodoListTitle,
     filter: 'all'
   })

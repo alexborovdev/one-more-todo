@@ -2,8 +2,7 @@ import { useCallback, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Container, Grid } from '@mui/material'
 import type { AppDispatch } from '@/app/store'
-import { addTodoAC } from '@/state/todoListsReducer'
-import { fetchTodos } from '@/state/todoListsThunks'
+import { createTodo, fetchTodos } from '@/state/todoListsThunks'
 import Header from '@/components/Header'
 import AddItemForm from '@/components/AddItemForm'
 import TodoLists from '@/components/TodoLists'
@@ -19,7 +18,7 @@ const App = () => {
   }, [dispatch])
 
   const addNewTodoList = useCallback((title: string) => {
-    dispatch(addTodoAC(title))
+    dispatch(createTodo(title))
   }, [dispatch])
 
   return (

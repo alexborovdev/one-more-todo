@@ -92,11 +92,14 @@ test('changes the specified task title in the specified todo list', () => {
   expect(endState['todo-2']).toBe(startState['todo-2'])
 })
 test('adds a new array when a new todo list was added', () => {
-  const action = addTodoAC('New Todo List')
+  const action = addTodoAC({
+    id: 'todo-3',
+    title: 'New Todo List'
+  })
   const startState = createInitialState()
   const endState = tasksReducer(startState, action)
 
-  expect(endState[action.id]).toEqual([])
+  expect(endState[action.todo.id]).toEqual([])
   expect(endState['todo-1']).toBe(startState['todo-1'])
   expect(endState['todo-2']).toBe(startState['todo-2'])
   expect(endState).not.toBe(startState)
