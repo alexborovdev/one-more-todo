@@ -8,9 +8,10 @@ type Action =
   | ReturnType<typeof changeTodoTitleAC>
   | ReturnType<typeof setTodosAC>
 
-export const addTodoAC = (todo: ApiTodo) => ({
+export const addTodoAC = (title: string) => ({
   type: 'ADD_TODO' as const,
-  todo
+  id: crypto.randomUUID(),
+  title
 })
 export const removeTodoAC = (id: string) => ({
   type: 'REMOVE_TODO' as const,
@@ -38,7 +39,8 @@ const todoListsReducer = (state: Todos = initialState, action: Action): Todos =>
     case 'ADD_TODO': {
       return [
         {
-          ...action.todo,
+          id: action.id,
+          title: action.title,
           filter: 'all'
         },
         ...state
